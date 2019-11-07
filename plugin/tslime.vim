@@ -25,7 +25,7 @@ function! Send_to_Tmux(text)
   let no_comments = substitute(a:text, ';.\{-}\n', '\n', "g")
   let no_newlines = substitute(no_comments, '\n', ' ', "g")
   let with_last_newline = substitute(no_newlines, '$', '\n', "g")
-  call Send_keys_to_Tmux('"'.escape(with_last_newline, '\"$').'"')
+  call Send_keys_to_Tmux('"'.escape(with_last_newline, '`\"$').'"')
 endfunction
 
 function! s:tmux_target()
