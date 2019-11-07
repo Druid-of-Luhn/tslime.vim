@@ -20,8 +20,12 @@ endfunction
 
 " Main function.
 " Use it in your script if you want to send text to a tmux session.
+" Strip comments and newlines from the text, to make it up-arrow friendly.
 function! Send_to_Tmux(text)
-  call Send_keys_to_Tmux('"'.escape(a:text, '\"$').'"')
+  let no_comments = substitute(a:text, ';.\{-}\n', '\n', "g")
+  let no_newlines = substitute(no_comments, '\n', ' ', "g")
+  let with_last_newline = substitute(no_newlines, '$', '\n', "g")
+  call Send_keys_to_Tmux('"'.escape(with_last_newline, '\"$').'"')
 endfunction
 
 function! s:tmux_target()
