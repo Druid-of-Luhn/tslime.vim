@@ -20,8 +20,14 @@ endfunction
 
 " Main function.
 " Use it in your script if you want to send text to a tmux session.
-" Strip comments and newlines from the text, to make it up-arrow friendly.
 function! Send_to_Tmux(text)
+  call Send_keys_to_Tmux('"'.escape(a:text, '`\"$').'"')
+endfunction
+
+" Main function.
+" Use it in your script if you want to send text to a tmux session.
+" Strip comments and newlines from the text, to make it up-arrow friendly.
+function! Send_to_Tmux_no_Newline(text)
   let no_comments = substitute(a:text, ';.\{-}\n', '\n', "g")
   let no_newlines = substitute(no_comments, '\n', ' ', "g")
   let with_last_newline = substitute(no_newlines, '$', '\n', "g")
@@ -129,6 +135,8 @@ endfunction
 
 vnoremap <silent> <Plug>SendSelectionToTmux "ry :call Send_to_Tmux(@r)<CR>
 nmap     <silent> <Plug>NormalModeSendToTmux vip<Plug>SendSelectionToTmux
+vnoremap <silent> <Plug>SendSelectionToTmuxNoNewline "ry :call Send_to_Tmux_no_Newline(@r)<CR>
+nmap     <silent> <Plug>NormalModeSendToTmuxNoNewline vip<Plug>SendSelectionToTmuxNoNewline
 
 nnoremap          <Plug>SetTmuxVars :call <SID>Tmux_Vars()<CR>
 
